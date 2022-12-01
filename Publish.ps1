@@ -162,7 +162,7 @@ param (
     $UseScriptDirectory=$True,
 
     ## => User Config <= ## 
-    $ProjectPath = "p5rpc.VisibleSocialStatPoints.csproj",
+    $ProjectPath = "p5rpc.VisibleSocialStatPoints/p5rpc.VisibleSocialStatPoints.csproj",
     $PackageName = "p5rpc.VisibleSocialStatPoints",
     $PublishOutputDir = "Publish/ToUpload",
 
