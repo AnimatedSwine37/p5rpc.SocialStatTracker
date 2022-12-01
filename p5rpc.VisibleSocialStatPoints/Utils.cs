@@ -48,15 +48,15 @@ namespace p5rpc.VisibleSocialStatPoints
         public static string PushXmm(int xmmNum)
         {
             return // Save an xmm register 
-                $"sub esp, 16\n" + // allocate space on stack
-                $"movdqu dqword [esp], xmm{xmmNum}\n";
+                $"sub rsp, 16\n" + // allocate space on stack
+                $"movdqu dqword [rsp], xmm{xmmNum}\n";
         }
 
-        // Pushes all xmm registers (0-7) to the stack, saving them to be restored with PopXmm
+        // Pushes all xmm registers (0-15) to the stack, saving them to be restored with PopXmm
         public static string PushXmm()
         {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 16; i++)
             {
                 sb.Append(PushXmm(i));
             }
@@ -67,8 +67,8 @@ namespace p5rpc.VisibleSocialStatPoints
         public static string PopXmm(int xmmNum)
         {
             return                 //Pop back the value from stack to xmm
-                $"movdqu xmm{xmmNum}, dqword [esp]\n" +
-                $"add esp, 16\n"; // re-align the stack
+                $"movdqu xmm{xmmNum}, dqword [rsp]\n" +
+                $"add rsp, 16\n"; // re-align the stack
         }
 
         // Pops all xmm registers (0-7) from the stack, restoring them after being saved with PushXmm
