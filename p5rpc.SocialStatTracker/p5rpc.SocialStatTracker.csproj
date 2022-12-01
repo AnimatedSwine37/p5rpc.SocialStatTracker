@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <None Remove="ModConfig.json" />
+    <None Remove="Preview.png" />
     <None Remove="Publish.ps1" />
     <None Remove="BuildLinked.ps1" />
     <None Remove="Reloaded.Trimming.targets" />
@@ -38,15 +39,18 @@
     <Content Include="ModConfig.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Update="Preview.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Reloaded.Memory.SigScan.ReloadedII.Interfaces" Version="1.2.0" />
     <PackageReference Include="Reloaded.Mod.Interfaces" Version="2.3.0" ExcludeAssets="runtime" />
     <PackageReference Include="Reloaded.SharedLib.Hooks" Version="1.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Preview.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
