@@ -173,12 +173,12 @@ param (
     $UseGameBananaDelta = $False,
     $UseNuGetDelta = $False,
 
-    $GitHubUserName = "", # Name of the GitHub user where the mod is contained
-    $GitHubRepoName = "", # Name of the GitHub repo where the mod is contained
+    $GitHubUserName = "AnimatedSwine37", # Name of the GitHub user where the mod is contained
+    $GitHubRepoName = "p5rpc.SocialStatTracker", # Name of the GitHub repo where the mod is contained
     $GitHubFallbackPattern = "", # For migrating from legacy build script.
     $GitHubInheritVersionFromTag = $True, # Uses version determined from release tag as opposed to metadata file in latest release.
 
-    $GameBananaItemId = 333681, # From mod page URL.
+    $GameBananaItemId = 414790, # From mod page URL.
 
     $NuGetPackageId = "p5rpc.SocialStatTracker",
     $NuGetFeedUrl = "http://packages.sewer56.moe:5000/v3/index.json",

@@ -17,7 +17,24 @@
   "HasExports": null,
   "IsLibrary": false,
   "ReleaseMetadataFileName": "p5rpc.SocialStatTracker.ReleaseMetadata.json",
-  "PluginData": {},
+  "PluginData": {
+    "NuGet": {
+      "AllowUpdateFromAnyRepository": false,
+      "DefaultRepositoryUrls": [
+        "http://packages.sewer56.moe:5000/v3/index.json"
+      ]
+    },
+    "GitHubRelease": {
+      "UserName": "AnimatedSwine37",
+      "RepositoryName": "p5rpc.SocialStatTracker",
+      "UseReleaseTag": true,
+      "AssetFileName": "Mod.zip"
+    },
+    "GameBanana": {
+      "ItemType": "Mod",
+      "ItemId": 414790
+    }
+  },
   "IsUniversalMod": false,
   "ModDependencies": [
     "Reloaded.Memory.SigScan.ReloadedII",
