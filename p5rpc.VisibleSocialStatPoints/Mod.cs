@@ -6,6 +6,7 @@ using Reloaded.Hooks.Definitions.X64;
 using Reloaded.Memory.Sigscan.Definitions.Structs;
 using Reloaded.Memory.SigScan.ReloadedII.Interfaces;
 using Reloaded.Mod.Interfaces;
+using System.Diagnostics;
 using static Reloaded.Hooks.Definitions.X64.FunctionAttribute;
 using IReloadedHooks = Reloaded.Hooks.ReloadedII.Interfaces.IReloadedHooks;
 
@@ -152,10 +153,10 @@ namespace p5rpc.VisibleSocialStatPoints
         {
             level = level / 20;
             socialStat /= 0x64;
-            if (level > 4) level = 4;
             short currentPoints = _socialStatPoints[socialStat];
+            if (level > 4) level = GetSocialStatLevel(socialStat, currentPoints); // Normal way breaks when a stat levels up :(
             short lastPointsNeeded = _pointsNeeded[socialStat][level];
-            if (level >= 4)
+            if (level == 4)
             {
                 int extraPoints = currentPoints - lastPointsNeeded;
                 if (extraPoints == 0)
@@ -174,6 +175,19 @@ namespace p5rpc.VisibleSocialStatPoints
             new short[]{ 0, 11, 38, 68, 113},
             new short[]{ 0, 14, 44, 91, 136},
         };
+
+        // Ideally we don't do this for speed but when a stat levels up the level becomes 5 (which it isn't really)
+        // Could probably find the actual level somewhere in a register or stack but I cba
+        private int GetSocialStatLevel(int socialStat, int currentPoints)
+        {
+            short[] pointsNeeded = _pointsNeeded[socialStat];
+            for(int i = 4; i >= 0; i--)
+            {
+                if (currentPoints >= pointsNeeded[i])
+                    return i;
+            }
+            return 0;
+        }
 
         [Function(new Register[] { Register.r8, Register.rax, Register.rdx }, Register.r8, true)]
         private delegate string AddPointsNeededFunc(string currentString, int socialStat, int level);
