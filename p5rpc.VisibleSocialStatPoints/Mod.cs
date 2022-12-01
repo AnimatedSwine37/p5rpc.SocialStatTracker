@@ -118,7 +118,7 @@ namespace p5rpc.VisibleSocialStatPoints
             });
 
             // TODO work out how to get the levels properly, seems to change when there's a level up and when there isn't :(
-            startupScanner.AddMainModuleScan("4C 89 54 24 ?? 0F 28 C3", result =>
+            startupScanner.AddMainModuleScan("E8 ?? ?? ?? ?? 4C 8B 05 ?? ?? ?? ?? 49 FF C5", result =>
             {
                 if (_socialStatPoints == null) return;
                 if (!result.Found)
@@ -131,13 +131,15 @@ namespace p5rpc.VisibleSocialStatPoints
                 string[] function =
                 {
                     "use64",
-                    $"push r8 \npush rcx \npush r9 \npush r11",
+                    $"push r8 \npush rax \npush rcx \npush r9 \npush r11",
                     "mov r8, r10",
-                    $"{Utils.PushXmm(0)}\n{Utils.PushXmm(4)}\n{Utils.PushXmm(1)}",
+                    $"{Utils.PushXmm(0)}\n{Utils.PushXmm(4)}\n{Utils.PushXmm(5)}\n{Utils.PushXmm(1)}",
+                    "sub rsp, 8", // Align stack
                     $"{addPointsCall}",
-                    $"{Utils.PopXmm(1)}\n{Utils.PopXmm(4)}\n{Utils.PopXmm(0)}",
-                    "pop r11 \npop r9 \npop rcx",
-                    "mov r10, r8",
+                    "add rsp, 8", // Realign stack
+                    $"{Utils.PopXmm(1)}\n{Utils.PopXmm(5)}\n{Utils.PopXmm(4)}\n{Utils.PopXmm(0)}",
+                    "pop r11 \npop r9 \npop rcx \npop rax",
+                    "mov [rsp + 0x38], r8",
                     "pop r8",
                  };
                 _textLvlUpHook = _hooks.CreateAsmHook(function, result.Offset + Utils.BaseAddress, AsmHookBehaviour.ExecuteFirst).Activate();
@@ -173,7 +175,7 @@ namespace p5rpc.VisibleSocialStatPoints
             new short[]{ 0, 14, 44, 91, 136},
         };
 
-        [Function(new Register[] { Register.r8, Register.rax, Register.rdx }, Register.r8, false)]
+        [Function(new Register[] { Register.r8, Register.rax, Register.rdx }, Register.r8, true)]
         private delegate string AddPointsNeededFunc(string currentString, int socialStat, int level);
 
         #region Standard Overrides
