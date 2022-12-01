@@ -48,6 +48,7 @@ namespace p5rpc.VisibleSocialStatPoints
         private readonly IModConfig _modConfig;
 
         private IAsmHook _textHook;
+        private IAsmHook _textLvlUpHook;
         private IReverseWrapper<AddPointsNeededFunc> _addPointsNeededReverseWrapper;
         private short* _socialStatPoints;
 
@@ -73,6 +74,8 @@ namespace p5rpc.VisibleSocialStatPoints
 
             Utils.Initialise(_logger, _configuration);
 
+            string addPointsCall = _hooks.Utilities.GetAbsoluteCallMnemonics(AddPointsNeeded, out _addPointsNeededReverseWrapper);
+
             var startupScannerController = _modLoader.GetController<IStartupScanner>();
             if (startupScannerController == null || !startupScannerController.TryGetTarget(out var startupScanner))
             {
@@ -82,7 +85,7 @@ namespace p5rpc.VisibleSocialStatPoints
 
             startupScanner.AddMainModuleScan("4C 8D 35 ?? ?? ?? ?? 0F B7 FD", result =>
             {
-                if(!result.Found)
+                if (!result.Found)
                 {
                     Utils.LogError("Unable to find social stat points, mod no worky :(");
                     return;
@@ -90,51 +93,74 @@ namespace p5rpc.VisibleSocialStatPoints
                 _socialStatPoints = (short*)Utils.GetGlobalAddress((nuint)result.Offset + (nuint)Utils.BaseAddress + 3);
                 Utils.LogDebug($"Social stat points start at 0x{(nuint)_socialStatPoints:X}");
             });
-            startupScanner.AddMainModuleScan("E8 ?? ?? ?? ?? 4C 8B 0D ?? ?? ?? ?? 49 FF C4", InitTextHook);
+
+            startupScanner.AddMainModuleScan("E8 ?? ?? ?? ?? 4C 8B 0D ?? ?? ?? ?? 49 FF C4", result =>
+            {
+                if (_socialStatPoints == null) return;
+                if (!result.Found)
+                {
+                    Utils.LogError("Unable to find social stat text code, you won't see points in the social stat screen :(");
+                    return;
+                }
+                Utils.LogDebug($"Found social stat text at 0x{result.Offset + Utils.BaseAddress:X}");
+
+                string[] function =
+                {
+                    "use64",
+                    $"push rcx \npush r9 \npush r10 \npush r11",
+                    $"{Utils.PushXmm(0)}\n{Utils.PushXmm(4)}\n{Utils.PushXmm(1)}",
+                    $"{addPointsCall}",
+                    $"{Utils.PopXmm(1)}\n{Utils.PopXmm(4)}\n{Utils.PopXmm(0)}",
+                    "pop r11 \npop r10 \npop r9 \npop rcx",
+                    "mov [rsp + 0x30], r8"
+                 };
+                _textHook = _hooks.CreateAsmHook(function, result.Offset + Utils.BaseAddress, AsmHookBehaviour.ExecuteFirst).Activate();
+            });
+
+            // TODO work out how to get the levels properly, seems to change when there's a level up and when there isn't :(
+            startupScanner.AddMainModuleScan("4C 89 54 24 ?? 0F 28 C3", result =>
+            {
+                if (_socialStatPoints == null) return;
+                if (!result.Found)
+                {
+                    Utils.LogError("Unable to find social stat gain text code, you won't see points in the social stat gain screen :(");
+                    return;
+                }
+                Utils.LogDebug($"Found social stat gain text at 0x{result.Offset + Utils.BaseAddress:X}");
+
+                string[] function =
+                {
+                    "use64",
+                    $"push r8 \npush rcx \npush r9 \npush r11",
+                    "mov r8, r10",
+                    $"{Utils.PushXmm(0)}\n{Utils.PushXmm(4)}\n{Utils.PushXmm(1)}",
+                    $"{addPointsCall}",
+                    $"{Utils.PopXmm(1)}\n{Utils.PopXmm(4)}\n{Utils.PopXmm(0)}",
+                    "pop r11 \npop r9 \npop rcx",
+                    "mov r10, r8",
+                    "pop r8",
+                 };
+                _textLvlUpHook = _hooks.CreateAsmHook(function, result.Offset + Utils.BaseAddress, AsmHookBehaviour.ExecuteFirst).Activate();
+            });
 
         }
 
-        private void InitTextHook(PatternScanResult result)
-        {
-            if (_socialStatPoints == null) return;
-            if(!result.Found)
-            {
-                Utils.LogError("Unable to find social stat text code, mod no worky :(");
-                return;
-            }
-            
-            Utils.LogDebug($"Found social stat text at 0x{result.Offset + Utils.BaseAddress:X}");
-
-            Utils.LogDebug($"Const is at {_downwardMoveConst}");
-
-            string[] function =
-            {
-                "use64",
-                $"push rcx \npush r9 \npush r10 \npush r11",
-                $"{Utils.PushXmm(0)}\n{Utils.PushXmm(4)}\n{Utils.PushXmm(1)}",
-                $"{_hooks.Utilities.GetAbsoluteCallMnemonics(AddPointsNeeded, out _addPointsNeededReverseWrapper)}",
-                $"{Utils.PopXmm(1)}\n{Utils.PopXmm(4)}\n{Utils.PopXmm(0)}",
-                "pop r11 \npop r10 \npop r9 \npop rcx",
-                "mov [rsp + 0x30], r8"
-            };
-
-            _textHook = _hooks.CreateAsmHook(function, result.Offset + Utils.BaseAddress, AsmHookBehaviour.ExecuteFirst).Activate();
-        }
-
+        
         private string AddPointsNeeded(string currentString, int socialStat, int level)
         {
             level = level / 20;
             socialStat /= 0x64;
+            if (level > 4) level = 4;
             short currentPoints = _socialStatPoints[socialStat];
             short lastPointsNeeded = _pointsNeeded[socialStat][level];
-            if(level >= 4)
+            if (level >= 4)
             {
                 int extraPoints = currentPoints - lastPointsNeeded;
                 if (extraPoints == 0)
                     return currentString;
                 return $"{currentString} +{extraPoints}";
             }
-            short pointsNeeded = _pointsNeeded[socialStat][level+1];
+            short pointsNeeded = _pointsNeeded[socialStat][level + 1];
             return $"{currentString} {currentPoints - lastPointsNeeded}/{pointsNeeded - lastPointsNeeded}";
         }
 
