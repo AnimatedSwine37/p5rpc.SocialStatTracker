@@ -1,4 +1,4 @@
-﻿using p5rpc.VisibleSocialStatPoints.Configuration;
+﻿using p5rpc.SocialStatTracker.Configuration;
 using Reloaded.Mod.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace p5rpc.VisibleSocialStatPoints
+namespace p5rpc.SocialStatTracker
 {
     internal class Utils
     {

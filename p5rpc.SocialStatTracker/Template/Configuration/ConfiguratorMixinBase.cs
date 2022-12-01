@@ -1,7 +1,7 @@
-﻿using p5rpc.VisibleSocialStatPoints.Configuration;
+﻿using p5rpc.SocialStatTracker.Configuration;
 using Reloaded.Mod.Interfaces;
 
-namespace p5rpc.VisibleSocialStatPoints.Template.Configuration
+namespace p5rpc.SocialStatTracker.Template.Configuration
 {
     /// <summary>
     /// Creates the various different configurations used by the mod.

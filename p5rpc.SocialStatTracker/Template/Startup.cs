@@ -3,13 +3,13 @@
  * to make it easier to upgrade to newer versions of the template.
 */
 
-using p5rpc.VisibleSocialStatPoints.Configuration;
-using p5rpc.VisibleSocialStatPoints.Template.Configuration;
+using p5rpc.SocialStatTracker.Configuration;
+using p5rpc.SocialStatTracker.Template.Configuration;
 using Reloaded.Hooks.ReloadedII.Interfaces;
 using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Internal;
 
-namespace p5rpc.VisibleSocialStatPoints.Template
+namespace p5rpc.SocialStatTracker.Template
 {
     public class Startup : IMod
     {

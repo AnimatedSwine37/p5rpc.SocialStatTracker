@@ -1,1 +1,1 @@
-# p5rpc.VisibleSocialStatPoints
+# p5rpc.SocialStatTracker

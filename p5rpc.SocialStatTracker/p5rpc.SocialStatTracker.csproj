@@ -7,7 +7,7 @@
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <OutputPath>$(RELOADEDIIMODS)/p5rpc.VisibleSocialStatPoints</OutputPath>
+    <OutputPath>$(RELOADEDIIMODS)/p5rpc.SocialStatTracker</OutputPath>
     <Deterministic>true</Deterministic>
     <ImplicitUsings>enable</ImplicitUsings>
 
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ReloadedLinkRoots Include="p5rpc.VisibleSocialStatPoints" />
+    <ReloadedLinkRoots Include="p5rpc.SocialStatTracker" />
     <!-- Add assemblies to be trimmed. You might need to add their dependencies too!  -->
     <!-- <ReloadedLinkAssemblies Include="Reloaded.Memory" /> -->
   </ItemGroup>

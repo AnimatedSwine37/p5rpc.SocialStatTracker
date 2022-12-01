@@ -162,8 +162,8 @@ param (
     $UseScriptDirectory=$True,
 
     ## => User Config <= ## 
-    $ProjectPath = "p5rpc.VisibleSocialStatPoints/p5rpc.VisibleSocialStatPoints.csproj",
-    $PackageName = "p5rpc.VisibleSocialStatPoints",
+    $ProjectPath = "p5rpc.SocialStatTracker/p5rpc.SocialStatTracker.csproj",
+    $PackageName = "p5rpc.SocialStatTracker",
     $PublishOutputDir = "Publish/ToUpload",
 
     ## => User: Delta Config
@@ -180,7 +180,7 @@ param (
 
     $GameBananaItemId = 333681, # From mod page URL.
 
-    $NuGetPackageId = "p5rpc.VisibleSocialStatPoints",
+    $NuGetPackageId = "p5rpc.SocialStatTracker",
     $NuGetFeedUrl = "http://packages.sewer56.moe:5000/v3/index.json",
     $NuGetAllowUnlisted = $False,
 

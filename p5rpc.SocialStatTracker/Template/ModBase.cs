@@ -1,6 +1,6 @@
-﻿using p5rpc.VisibleSocialStatPoints.Configuration;
+﻿using p5rpc.SocialStatTracker.Configuration;
 
-namespace p5rpc.VisibleSocialStatPoints.Template
+namespace p5rpc.SocialStatTracker.Template
 {
     /// <summary>
     /// Base class for implementing mod functionality.

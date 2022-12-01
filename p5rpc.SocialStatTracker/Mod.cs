@@ -1,5 +1,5 @@
-﻿using p5rpc.VisibleSocialStatPoints.Configuration;
-using p5rpc.VisibleSocialStatPoints.Template;
+﻿using p5rpc.SocialStatTracker.Configuration;
+using p5rpc.SocialStatTracker.Template;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.Enums;
 using Reloaded.Hooks.Definitions.X64;
@@ -10,7 +10,7 @@ using System.Diagnostics;
 using static Reloaded.Hooks.Definitions.X64.FunctionAttribute;
 using IReloadedHooks = Reloaded.Hooks.ReloadedII.Interfaces.IReloadedHooks;
 
-namespace p5rpc.VisibleSocialStatPoints
+namespace p5rpc.SocialStatTracker
 {
     /// <summary>
     /// Your mod logic goes here.

@@ -1,0 +1,31 @@
+{
+  "ModId": "p5rpc.SocialStatTracker",
+  "ModName": "Social Stat Tracker",
+  "ModAuthor": "AnimatedSwine37",
+  "ModVersion": "1.0.0",
+  "ModDescription": "Displays how many more points you need to rank up each social stat in the stats menu",
+  "ModDll": "p5rpc.SocialStatTracker.dll",
+  "ModIcon": "Preview.png",
+  "ModR2RManagedDll32": "x86/p5rpc.SocialStatTracker.dll",
+  "ModR2RManagedDll64": "x64/p5rpc.SocialStatTracker.dll",
+  "ModNativeDll32": "",
+  "ModNativeDll64": "",
+  "Tags": [
+    "GUI/HUD"
+  ],
+  "CanUnload": null,
+  "HasExports": null,
+  "IsLibrary": false,
+  "ReleaseMetadataFileName": "p5rpc.SocialStatTracker.ReleaseMetadata.json",
+  "PluginData": {},
+  "IsUniversalMod": false,
+  "ModDependencies": [
+    "Reloaded.Memory.SigScan.ReloadedII",
+    "reloaded.sharedlib.hooks"
+  ],
+  "OptionalDependencies": [],
+  "SupportedAppId": [
+    "p5r.exe"
+  ],
+  "ProjectUrl": "https://github.com/AnimatedSwine37/p5rpc.SocialStatTracker"
+}

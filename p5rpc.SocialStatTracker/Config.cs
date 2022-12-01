@@ -1,7 +1,7 @@
-﻿using p5rpc.VisibleSocialStatPoints.Template.Configuration;
+﻿using p5rpc.SocialStatTracker.Template.Configuration;
 using System.ComponentModel;
 
-namespace p5rpc.VisibleSocialStatPoints.Configuration
+namespace p5rpc.SocialStatTracker.Configuration
 {
     public class Config : Configurable<Config>
     {

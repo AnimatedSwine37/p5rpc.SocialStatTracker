@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace p5rpc.VisibleSocialStatPoints.Template.Configuration
+namespace p5rpc.SocialStatTracker.Template.Configuration
 {
     public class Utilities
     {
