@@ -2,7 +2,7 @@
   "ModId": "p5rpc.SocialStatTracker",
   "ModName": "Social Stat Tracker",
   "ModAuthor": "AnimatedSwine37",
-  "ModVersion": "1.0.0",
+  "ModVersion": "1.0.1",
   "ModDescription": "Displays how many more points you need to rank up each social stat in the stats menu",
   "ModDll": "p5rpc.SocialStatTracker.dll",
   "ModIcon": "Preview.png",
