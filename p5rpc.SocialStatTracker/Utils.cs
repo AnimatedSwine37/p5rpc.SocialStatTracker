@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Reloaded.Memory.SigScan.ReloadedII.Interfaces;
 
 namespace p5rpc.SocialStatTracker
 {
@@ -13,14 +14,37 @@ namespace p5rpc.SocialStatTracker
     {
         private static ILogger _logger;
         private static Config _config;
+        private static IStartupScanner _startupScanner;
+
         internal static nint BaseAddress { get; private set; }
 
-        internal static void Initialise(ILogger logger, Config config)
+        internal static void Initialise(ILogger logger, Config config, IModLoader modLoader)
         {
             _logger = logger;
             _config = config;
             using var thisProcess = Process.GetCurrentProcess();
             BaseAddress = thisProcess.MainModule!.BaseAddress;
+            
+            var startupScannerController = modLoader.GetController<IStartupScanner>();
+            if (startupScannerController == null || !startupScannerController.TryGetTarget(out _startupScanner))
+            {
+                LogError($"Unable to get controller for Reloaded SigScan Library, stuff won't work :(");
+            }
+        }
+        
+        internal static void SigScan(string pattern, string name, Action<nint> action)
+        {
+            _startupScanner.AddMainModuleScan(pattern, result =>
+            {
+                if (!result.Found)
+                {
+                    LogError($"Unable to find {name}, stuff won't work :(");
+                    return;
+                }
+                LogDebug($"Found {name} at 0x{result.Offset + BaseAddress:X}");
+    
+                action(result.Offset + BaseAddress);
+            });
         }
 
         internal static void LogDebug(string message)
